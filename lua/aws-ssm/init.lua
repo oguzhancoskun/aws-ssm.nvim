@@ -2,7 +2,7 @@
 
 local M = {}
 
-function M.save_to_ssm(text, path, profile)
+local function save_to_ssm(text, path, profile)
   local cmd = string.format(
     "aws ssm put-parameter --name '%s' --value '%s' --type SecureString --profile %s > /dev/null 2>&1 ; echo $?",
     path, text, profile
@@ -19,4 +19,20 @@ function M.save_to_ssm(text, path, profile)
   end
 end
 
+function M.ssm()
+  local text = vim.fn.input("Enter Text: ")
+  local path = vim.fn.input("Enter Path: ")
+  local profile = vim.fn.input("Enter Profile: ")
+
+  local clipboard_content = vim.fn.getreg('*')
+  if clipboard_content ~= '' then
+    text = clipboard_content
+  end
+  
+  print("")
+  
+  save_to_ssm(text, path, profile)
+end
+
 return M
+
