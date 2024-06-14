@@ -3,14 +3,14 @@
 
 ## Installation
 
-### Using [vim-plug](
+### Using vim-plug
 
 ```vim
 Plug 'oguzhancoskun/aws-ssm.nvim'
 ```
 
 
-## Configurationππ
+## Configuration
 
 ```lua
 require('aws-ssm')
