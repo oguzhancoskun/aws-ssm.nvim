@@ -1,3 +1,6 @@
+-- Author: Oguzhan Coskun
+-- Mail: svartonn@gmail.com
+
 local M = {}
 
 local use_fidget = false
