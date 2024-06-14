@@ -1,3 +1,4 @@
+local M = {}
 
 local function save_to_ssm(text, path, profile)
   local cmd = string.format(
