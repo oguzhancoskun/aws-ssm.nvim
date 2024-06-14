@@ -1,5 +1,26 @@
 local M = {}
 
+local use_fidget = false
+
+function M.setup(options)
+  if options and options.fidget then
+    use_fidget = true
+  end
+end
+
+local function send_notification(message, level)
+  if use_fidget then
+    local fidget = require('fidget')
+    if fidget and fidget.notify then
+      fidget.notify(message, level)
+    else
+      vim.notify(message, level)
+    end
+  else
+    vim.notify(message, level)
+  end
+end
+
 local function save_to_ssm(text, path, profile)
   local cmd = string.format(
     "aws ssm put-parameter --name '%s' --value '%s' --type SecureString --profile %s > /dev/null 2>&1 ; echo $?",
@@ -11,9 +32,9 @@ local function save_to_ssm(text, path, profile)
   handle:close()
 
   if exit_status == 0 then
-    vim.notify("Parameter saved successfully!", vim.log.levels.INFO)
+    send_notification("Parameter saved successfully!", vim.log.levels.INFO)
   else
-    vim.notify("Failed to save parameter. Exit status: " .. exit_status, vim.log.levels.ERROR)
+    send_notification("Failed to save parameter. Exit status: " .. exit_status, vim.log.levels.ERROR)
   end
 end
 
@@ -25,7 +46,7 @@ function M.ssm()
     local answer = vim.fn.input("Clipboard detected (y/n): ")
     if answer == 'y' then
       text = clipboard_content
-      vim.notify("Clipboard content used as parameter text.", vim.log.levels.INFO)
+      send_notification("Clipboard content used as parameter text.", vim.log.levels.INFO)
     else
       text = vim.fn.input("Enter Text: ")
     end
@@ -34,9 +55,10 @@ function M.ssm()
   local path = vim.fn.input("Enter Path: ")
   local profile = vim.fn.input("Enter Profile: ")
 
-  vim.notify("\n", vim.log.levels.INFO)
+  send_notification("\n", vim.log.levels.INFO)
 
   save_to_ssm(text, path, profile)
 end
 
 return M
+
