@@ -22,8 +22,6 @@ function M.ssm()
 
   local text
   if clipboard_content ~= '' then
-
-
     local answer = vim.fn.input("Clipboard detected (y/n): ")
     if answer == 'y' then
       text = clipboard_content
@@ -31,10 +29,6 @@ function M.ssm()
     else
       text = vim.fn.input("Enter Text: ")
     end
-
-    text = clipboard_content
-  else
-    text = vim.fn.input("Enter Text: ")
   end
 
   local path = vim.fn.input("Enter Path: ")
