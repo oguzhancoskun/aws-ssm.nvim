@@ -22,8 +22,17 @@ function M.ssm()
 
   local text
   if clipboard_content ~= '' then
+
+
+    local answer = vim.fn.input("Clipboard detected (y/n): ")
+    if answer == 'y' then
+      text = clipboard_content
+      print("Clipboard content used as parameter text.")
+    else
+      text = vim.fn.input("Enter Text: ")
+    end
+
     text = clipboard_content
-    print("Clipboard content used as parameter text.")
   else
     text = vim.fn.input("Enter Text: ")
   end
