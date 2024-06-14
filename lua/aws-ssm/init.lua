@@ -1,6 +1,3 @@
--- aws-ssm.lua
-
-local M = {}
 
 local function save_to_ssm(text, path, profile)
   local cmd = string.format(
@@ -13,26 +10,29 @@ local function save_to_ssm(text, path, profile)
   handle:close()
 
   if exit_status == 0 then
-    vim.notify("Parameter saved successfully!", vim.log.levels.INFO)
+    print("Parameter saved successfully!")
   else
-    vim.notify("Failed to save parameter. Exit status: " .. exit_status, vim.log.levels.ERROR)
+    print("Failed to save parameter. Exit status: " .. exit_status)
   end
 end
 
 function M.ssm()
-  local text = vim.fn.input("Enter Text: ")
+  local clipboard_content = vim.fn.getreg('*')
+
+  local text
+  if clipboard_content ~= '' then
+    text = clipboard_content
+    print("Clipboard content used as parameter text.")
+  else
+    text = vim.fn.input("Enter Text: ")
+  end
+
   local path = vim.fn.input("Enter Path: ")
   local profile = vim.fn.input("Enter Profile: ")
 
-  local clipboard_content = vim.fn.getreg('*')
-  if clipboard_content ~= '' then
-    text = clipboard_content
-  end
-  
   print("")
-  
+
   save_to_ssm(text, path, profile)
 end
 
 return M
-
