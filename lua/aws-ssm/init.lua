@@ -11,9 +11,9 @@ local function save_to_ssm(text, path, profile)
   handle:close()
 
   if exit_status == 0 then
-    print("Parameter saved successfully!")
+    vim.notify("Parameter saved successfully!", vim.log.levels.INFO)
   else
-    print("Failed to save parameter. Exit status: " .. exit_status)
+    vim.notify("Failed to save parameter. Exit status: " .. exit_status, vim.log.levels.ERROR)
   end
 end
 
@@ -25,7 +25,7 @@ function M.ssm()
     local answer = vim.fn.input("Clipboard detected (y/n): ")
     if answer == 'y' then
       text = clipboard_content
-      print("Clipboard content used as parameter text.")
+      vim.notify("Clipboard content used as parameter text.", vim.log.levels.INFO)
     else
       text = vim.fn.input("Enter Text: ")
     end
@@ -34,7 +34,7 @@ function M.ssm()
   local path = vim.fn.input("Enter Path: ")
   local profile = vim.fn.input("Enter Profile: ")
 
-  print("\n")
+  vim.notify("\n", vim.log.levels.INFO)
 
   save_to_ssm(text, path, profile)
 end
