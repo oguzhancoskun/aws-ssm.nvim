@@ -40,7 +40,7 @@ function M.ssm()
   local path = vim.fn.input("Enter Path: ")
   local profile = vim.fn.input("Enter Profile: ")
 
-  print("")
+  print("\n")
 
   save_to_ssm(text, path, profile)
 end
