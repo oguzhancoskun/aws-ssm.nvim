@@ -49,10 +49,12 @@ local function save_to_ssm(text, path, profile)
 
   if check_parameter(path, profile) then
     local answer vim.fn.input("Parameter already exists. Do you want to overwrite it? (y/n): ")
-    overwrite = "--overwrite"
     if answer == 'n' then
       send_notification("Parameter not saved.", vim.log.levels.INFO)
       return
+    end
+    else
+      overwrite = "--no-overwrite"
     end
   end
 
