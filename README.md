@@ -1,6 +1,8 @@
 # aws-ssm.nvim
 `aws-ssm.nvim` is a Lua module for NeoVim or Vim that facilitates adding parameters to AWS Systems Manager Parameter Store.
 
+Module can be check clipboard and if any clipboard item exist, you can use it directly.
+
 ## Installation
 
 ### Using vim-plug
