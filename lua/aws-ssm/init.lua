@@ -24,10 +24,42 @@ local function send_notification(message, level)
   end
 end
 
-local function save_to_ssm(text, path, profile)
+
+local function check_parameter(path, profile)
   local cmd = string.format(
-    "aws ssm put-parameter --name '%s' --value '%s' --type SecureString --profile %s > /dev/null 2>&1 ; echo $?",
-    path, text, profile
+    "aws ssm get-parameter --name '%s' --profile %s > /dev/null 2>&1 ; echo $?",
+    path, profile
+  )
+
+  local handle = io.popen(cmd)
+  local exit_status = handle:read("*n")
+  handle:close()
+
+  if exit_status == 0 then
+    return true
+  else
+    return false
+  end
+end
+
+local function save_to_ssm(text, path, profile)
+
+
+  local overwrite = "--no-overwrite"
+
+  if check_parameter(path, profile) then
+    local answer vim.fn.input("Parameter already exists. Do you want to overwrite it? (y/n): ")
+    overwrite = "--overwrite"
+    if answer == 'n' then
+      send_notification("Parameter not saved.", vim.log.levels.INFO)
+      return
+    end
+  end
+
+
+  local cmd = string.format( 
+    "aws ssm put-parameter --name '%s' --value '%s' --type SecureString --profile %s %s > /dev/null 2>&1 ; echo $?",
+    path, text, profile, overwrite
   )
 
   local handle = io.popen(cmd)
