@@ -17,6 +17,14 @@ require('aws-ssm')
 vim.cmd("command! -nargs=0 SSM lua require('aws-ssm').ssm()")
 ```
 
+## Optional Setup Settings
+
+```lua
+requre('aws-ssm').setup{
+  fidget = true, -- if you want to see the outputs on fidget
+}
+```
+
 ## Usage
 
 ```vim
