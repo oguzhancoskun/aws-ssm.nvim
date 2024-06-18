@@ -1,15 +1,16 @@
-name: 'aws-ssm.nvim'
-on:
-  push:
-    branches:
-      - main
+name: Workflow for Codecov Lua
+on: [push, pull_request]
 jobs:
-  deploy:
+  run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          fetch-depth: 0
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
           verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
