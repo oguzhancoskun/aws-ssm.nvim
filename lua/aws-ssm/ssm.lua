@@ -90,6 +90,7 @@ function M.ssm()
   save_to_ssm(text, path, profile)
 end
 
+
 local function create_floating_window()
   local buf = vim.api.nvim_create_buf(false, true)
   local width = math.floor(vim.o.columns * 0.8)
@@ -111,15 +112,66 @@ local function create_floating_window()
   return buf, win
 end
 
-local function list_in_floating_window(parameters)
+local function list_in_floating_window(parameters, profile)
   local buf, win = create_floating_window()
 
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, parameters)
   vim.api.nvim_buf_set_option(buf, 'modifiable', false)
   vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
 
-  -- Close the window on 'q' press
-  vim.api.nvim_buf_set_keymap(buf, 'n', 'q', '<cmd>bd!<CR>', { noremap = true, silent = true })
+  -- Highlight the selected line
+  local current_line = 1
+  vim.api.nvim_buf_add_highlight(buf, -1, 'Visual', current_line - 1, 0, -1)
+
+  -- Key mappings for navigation and selection
+  local function set_keymap(key, func)
+    vim.api.nvim_buf_set_keymap(buf, 'n', key, '', {
+      noremap = true,
+      silent = true,
+      callback = func,
+    })
+  end
+
+  local function highlight_line(line)
+    vim.api.nvim_buf_clear_namespace(buf, -1, 0, -1)
+    vim.api.nvim_buf_add_highlight(buf, -1, 'Visual', line - 1, 0, -1)
+  end
+
+  local function get_parameter_value(name)
+    local cmd = string.format("aws ssm get-parameter --name '%s' --profile %s --query 'Parameter.Value' --output text", name, profile)
+    local handle = io.popen(cmd)
+    local result = handle:read("*a")
+    handle:close()
+    return result
+  end
+
+  local function show_selected_value()
+    local name = parameters[current_line]
+    local value = get_parameter_value(name)
+    send_notification("Value for " .. name .. ": " .. value, vim.log.levels.INFO)
+  end
+
+  set_keymap('j', function()
+    if current_line < #parameters then
+      current_line = current_line + 1
+      highlight_line(current_line)
+    end
+  end)
+
+  set_keymap('k', function()
+    if current_line > 1 then
+      current_line = current_line - 1
+      highlight_line(current_line)
+    end
+  end)
+
+  set_keymap('<CR>', function()
+    show_selected_value()
+  end)
+
+  set_keymap('q', function()
+    vim.api.nvim_win_close(win, true)
+  end)
 end
 
 function M.list_parameters()
@@ -138,11 +190,12 @@ function M.list_parameters()
   local parameters = vim.fn.json_decode(result)
 
   if parameters and #parameters > 0 then
-    list_in_floating_window(parameters)
+    list_in_floating_window(parameters, profile)
   else
     send_notification("No matching parameters found.", vim.log.levels.INFO)
   end
 end
+
 
 
 return M
