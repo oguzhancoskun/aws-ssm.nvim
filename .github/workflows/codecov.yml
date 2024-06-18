@@ -1,4 +1,4 @@
-name: 'Mindmerge SAM Build and Deploy'
+name: 'aws-ssm.nvim'
 on:
   push:
     branches:
