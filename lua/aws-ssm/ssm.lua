@@ -119,11 +119,9 @@ local function list_in_floating_window(parameters, profile)
   vim.api.nvim_buf_set_option(buf, 'modifiable', false)
   vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
 
-  -- Highlight the selected line
   local current_line = 1
   vim.api.nvim_buf_add_highlight(buf, -1, 'Visual', current_line - 1, 0, -1)
 
-  -- Key mappings for navigation and selection
   local function set_keymap(key, func)
     vim.api.nvim_buf_set_keymap(buf, 'n', key, '', {
       noremap = true,
@@ -195,8 +193,6 @@ function M.list_parameters()
     send_notification("No matching parameters found.", vim.log.levels.INFO)
   end
 end
-
-
 
 return M
 
