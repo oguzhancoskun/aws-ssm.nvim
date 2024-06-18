@@ -2,7 +2,7 @@ name: 'aws-ssm.nvim'
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
