@@ -1,5 +1,5 @@
 -- init.lua
-local ssm = require('ssm')
+local ssm = require('aws-ssm.ssm')
 
 local M = {}
 
