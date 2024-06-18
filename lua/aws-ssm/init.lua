@@ -14,6 +14,15 @@ function M.setup(options)
     end,
     { nargs = 0 }
   )
+
+  vim.api.nvim_create_user_command(
+    'PSMList',
+    function()
+      ssm.list_parameters()
+    end,
+    { nargs = 0 }
+  )
+
 end
 
 return M

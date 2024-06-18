@@ -90,5 +90,60 @@ function M.ssm()
   save_to_ssm(text, path, profile)
 end
 
+local function create_floating_window()
+  local buf = vim.api.nvim_create_buf(false, true)
+  local width = math.floor(vim.o.columns * 0.8)
+  local height = math.floor(vim.o.lines * 0.8)
+  local row = math.floor((vim.o.lines - height) / 2)
+  local col = math.floor((vim.o.columns - width) / 2)
+
+  local opts = {
+    style = 'minimal',
+    relative = 'editor',
+    width = width,
+    height = height,
+    row = row,
+    col = col,
+    border = 'rounded'
+  }
+
+  local win = vim.api.nvim_open_win(buf, true, opts)
+  return buf, win
+end
+
+local function list_in_floating_window(parameters)
+  local buf, win = create_floating_window()
+
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, parameters)
+  vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+  vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
+
+  -- Close the window on 'q' press
+  vim.api.nvim_buf_set_keymap(buf, 'n', 'q', '<cmd>bd!<CR>', { noremap = true, silent = true })
+end
+
+function M.list_parameters()
+  local keyword = vim.fn.input("Enter keyword to search for: ")
+  local profile = vim.fn.input("Enter AWS profile: ")
+
+  local cmd = string.format(
+    "aws ssm describe-parameters --profile %s --query 'Parameters[?contains(Name, `%s`)].Name' --output json",
+    profile, keyword
+  )
+
+  local handle = io.popen(cmd)
+  local result = handle:read("*a")
+  handle:close()
+
+  local parameters = vim.fn.json_decode(result)
+
+  if parameters and #parameters > 0 then
+    list_in_floating_window(parameters)
+  else
+    send_notification("No matching parameters found.", vim.log.levels.INFO)
+  end
+end
+
+
 return M
 
