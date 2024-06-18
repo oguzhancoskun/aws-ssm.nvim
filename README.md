@@ -1,11 +1,11 @@
 # aws-ssm.nvim
 
-[![language](https://img.shields.io/badge/language-lua-yellow)]
-[![version](https://img.shields.io/badge/version-0.1.0-blue)]
-[![author](https://img.shields.io/badge/author-oguzhancoskun-blue)]
-[![neovim](https://img.shields.io/badge/neovim-0.5%2B-green)]
-[![license](https://img.shields.io/github/license/oguzhancoskun/aws-ssm.nvim)]
-[![GitHub stars](https://img.shields.io/github/stars/oguzhancoskun/aws-ssm.nvim)]
+![language](https://img.shields.io/badge/language-lua-yellow)
+![version](https://img.shields.io/badge/version-0.1.0-blue)
+![author](https://img.shields.io/badge/author-oguzhancoskun-blue)
+![neovim](https://img.shields.io/badge/neovim-0.5%2B-green)
+![license](https://img.shields.io/github/license/oguzhancoskun/aws-ssm.nvim)
+![GitHub stars](https://img.shields.io/github/stars/oguzhancoskun/aws-ssm.nvim)
 
 `aws-ssm.nvim` is a Lua module for NeoVim or Vim that facilitates the use of
 AWS SSM Parameter Store. This module is using `aws-cli` to interact with AWS SSM Parameter Store.
