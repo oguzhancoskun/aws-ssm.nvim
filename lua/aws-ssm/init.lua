@@ -7,7 +7,7 @@ function M.setup(options)
   ssm.setup(options)
 
   -- Register the custom command
-  vim.api.nvim_create_user_command(
+  vim.api.nvim_create_user_command( -- luacheck: ignore
     'PSMPut',
     function()
       ssm.ssm()
@@ -15,7 +15,7 @@ function M.setup(options)
     { nargs = 0 }
   )
 
-  vim.api.nvim_create_user_command(
+  vim.api.nvim_create_user_command( -- luacheck: ignore
     'PSMList',
     function()
       ssm.list_parameters()

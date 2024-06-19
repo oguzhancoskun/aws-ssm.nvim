@@ -43,7 +43,7 @@ local function save_to_ssm(text, path, profile)
   local overwrite = "--no-overwrite"
 
   if check_parameter(path, profile) then
-    local answer = vim.fn.input("Parameter already exists. Do you want to overwrite it? (y/n): ")
+    local answer = vim.fn.input("Parameter already exists. Do you want to overwrite it? (y/n): ") -- luacheck: ignore
     if answer == 'n' then
       send_notification("Parameter not saved.", vim.log.levels.INFO)
       return
@@ -136,7 +136,11 @@ local function list_in_floating_window(parameters, profile)
   end
 
   local function get_parameter_value(name)
-    local cmd = string.format("aws ssm get-parameter --name '%s' --profile %s --query 'Parameter.Value' --output text", name, profile)
+    local cmd = string.format(
+      "aws ssm get-parameter --name '%s' --profile %s --query 'Parameter.Value' --output text" ..
+      name, profile
+    )
+
     local handle = io.popen(cmd)
     local result = handle:read("*a")
     handle:close()
