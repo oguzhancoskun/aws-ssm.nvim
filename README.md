@@ -1,6 +1,6 @@
 # aws-ssm.nvim
 
-[![Luacheck](https://img.shields.io/github/actions/workflow/status/oguzhancoskun/aws-ssm.nvim/luacheck.yml?branch=master&label=Luacheck&logo=Lua)](https://github.com/oguzhancoskun/aws-ssm.nvim/actions?workflow=Luacheck)
+[![Luacheck](https://img.shields.io/github/actions/workflow/status/oguzhancoskun/aws-ssm.nvim/luacheck.yml?branch=main&label=Luacheck&logo=Lua)](https://github.com/oguzhancoskun/aws-ssm.nvim/actions?workflow=Luacheck)
 ![language](https://img.shields.io/badge/language-lua-yellow)
 ![version](https://img.shields.io/badge/version-0.1.0-blue)
 ![author](https://img.shields.io/badge/author-oguzhancoskun-blue)
