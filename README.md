@@ -11,6 +11,11 @@
 `aws-ssm.nvim` is a Lua module for NeoVim or Vim that facilitates the use of
 AWS SSM Parameter Store. This module is using `aws-cli` to interact with AWS SSM Parameter Store.
 
+## Requirements
+
+- [aws-cli](https://aws.amazon.com/cli/)
+- [fidget](https://github.com/j-hui/fidget.nvim) (optional)
+
 ## Installation
 
 ### Using vim-plug
